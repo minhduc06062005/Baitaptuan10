@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Công Việc</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #f4f4f4; }
+        .container { max-width: 400px; margin: 50px auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+        ul { list-style-type: none; padding: 0; }
+        li { padding: 10px; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center; }
+        button { cursor: pointer; background: red; color: white; border: none; padding: 5px 10px; border-radius: 5px; margin-left: 5px; }
+        button:hover { background: darkred; }
+        input { padding: 10px; width: 70%; margin-right: 10px; }
+        .edit-btn { background: blue; }
+        .edit-btn:hover { background: darkblue; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Quản lý Công Việc</h2>
+        <input type="text" id="taskInput" placeholder="Nhập công việc...">
+        <button onclick="addTask()">Thêm</button>
+        <ul id="taskList"></ul>
+    </div>
+
+    <script>
+        let tasks = [];
+
+        function addTask() {
+            let taskInput = document.getElementById("taskInput");
+            let task = taskInput.value.trim();
+            if (task) {
+                tasks.push(task);
+                taskInput.value = "";
+                displayTasks();
+            }
+        }
+
+        function removeTask(index) {
+            tasks.splice(index, 1);
+            displayTasks();
+        }
+
+        function editTask(index) {
+            let newTask = prompt("Chỉnh sửa công việc:", tasks[index]);
+            if (newTask !== null && newTask.trim() !== "") {
+                tasks[index] = newTask.trim();
+                displayTasks();
+            }
+        }
+
+        function displayTasks() {
+            let taskList = document.getElementById("taskList");
+            taskList.innerHTML = "";
+            tasks.forEach((task, index) => {
+                let li = document.createElement("li");
+                li.textContent = task;
+                
+                let editBtn = document.createElement("button");
+                editBtn.textContent = "Sửa";
+                editBtn.classList.add("edit-btn");
+                editBtn.onclick = function() { editTask(index); };
+                
+                let removeBtn = document.createElement("button");
+                removeBtn.textContent = "Xóa";
+                removeBtn.onclick = function() { removeTask(index); };
+                
+                li.appendChild(editBtn);
+                li.appendChild(removeBtn);
+                taskList.appendChild(li);
+            });
+        }
+    </script>
+</body>
+</html>
+
